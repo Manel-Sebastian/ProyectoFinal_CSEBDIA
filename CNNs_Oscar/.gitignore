@@ -1,0 +1,30 @@
+# Variables de entorno y claves API — nunca subir al repositorio
+.env
+*.env
+.env.*
+ 
+# Artefactos de Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+ 
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+ 
+# Datos y modelos grandes
+data/
+*.npz
+*.pt
+*.pth
+*.ckpt
+ 
+# Entornos virtuales
+.venv/
+venv/
+env/

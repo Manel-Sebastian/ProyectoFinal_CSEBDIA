@@ -1,6 +1,0 @@
-DOCUMENTACIÓN DE CASOS DE FALLO
-============================================================
-
-Threshold: Score < 0.6
-Total de casos: 0
-

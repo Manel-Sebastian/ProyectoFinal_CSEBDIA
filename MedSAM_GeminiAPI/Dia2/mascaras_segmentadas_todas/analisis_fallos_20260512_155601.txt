@@ -1,0 +1,223 @@
+======================================================================
+ANÁLISIS DE CASOS CRÍTICOS EN SEGMENTACIÓN MEDSAM
+======================================================================
+
+📋 RESUMEN GENERAL
+----------------------------------------------------------------------
+Total de imágenes procesadas: 70
+Rango de scores: 0.6064 - 0.6623
+Media de scores: 0.6357
+Desviación estándar: 0.0114
+
+⚠️  CATEGORIZACIÓN DE IMÁGENES
+----------------------------------------------------------------------
+Excelente (score > 0.65):        5 imágenes (7.1%)
+Bueno (0.63 <= score <= 0.65):  42 imágenes (60.0%)
+Aceptable (0.60 <= score < 0.63): 23 imágenes (32.9%)
+
+🔍 IMÁGENES CON SCORES MÁS BAJOS (Percentil 25)
+----------------------------------------------------------------------
+Threshold: Score <= 0.6284
+Total: 18 imágenes
+
+1. Imagen: img_1777026670875.png
+   Score: 0.6275
+   Ruta: test\no
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777026670875.png
+
+2. Imagen: img_1777027673930.png
+   Score: 0.6265
+   Ruta: test\no
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777027673930.png
+
+3. Imagen: img_1777028325664.png
+   Score: 0.6219
+   Ruta: test\no
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777028325664.png
+
+4. Imagen: img_1777026555963.png
+   Score: 0.6253
+   Ruta: test\si
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777026555963.png
+
+5. Imagen: img_1777026663955.png
+   Score: 0.6262
+   Ruta: train\no
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777026663955.png
+
+6. Imagen: img_1777026677571.png
+   Score: 0.6240
+   Ruta: train\no
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777026677571.png
+
+7. Imagen: img_1777027208507.png
+   Score: 0.6283
+   Ruta: train\no
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777027208507.png
+
+8. Imagen: img_1777027216755.png
+   Score: 0.6237
+   Ruta: train\no
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777027216755.png
+
+9. Imagen: img_1777027229835.png
+   Score: 0.6260
+   Ruta: train\no
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777027229835.png
+
+10. Imagen: img_1777027692722.png
+   Score: 0.6127
+   Ruta: train\no
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777027692722.png
+
+11. Imagen: img_1777027697410.png
+   Score: 0.6164
+   Ruta: train\no
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777027697410.png
+
+12. Imagen: img_1777027701490.png
+   Score: 0.6086
+   Ruta: train\no
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777027701490.png
+
+13. Imagen: img_1777028314472.png
+   Score: 0.6221
+   Ruta: train\no
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777028314472.png
+
+14. Imagen: img_1776864655529.png
+   Score: 0.6272
+   Ruta: train\si
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1776864655529.png
+
+15. Imagen: img_1777026546667.png
+   Score: 0.6263
+   Ruta: train\si
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777026546667.png
+
+16. Imagen: img_1777026609459.png
+   Score: 0.6228
+   Ruta: train\si
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777026609459.png
+
+17. Imagen: img_1777027212259.png
+   Score: 0.6064
+   Ruta: train\si
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777027212259.png
+
+18. Imagen: img_1777027221619.png
+   Score: 0.6065
+   Ruta: train\si
+   Bounding Box: [0, 0, 640, 480]
+   Máscara: mask_img_1777027221619.png
+
+💡 POSIBLES CAUSAS DE BAJA CONFIANZA
+----------------------------------------------------------------------
+
+1. ILUMINACIÓN Y CONTRASTE
+   - Luz térmica muy tenue o débil
+   - Bajo contraste entre dedo y fondo
+   - Variación en la intensidad de la radiación térmica
+   - Reflectancias heterogéneas
+
+2. FACTORES ANATÓMICOS
+   - Dedos de diferente tamaño
+   - Posicionamiento atípico
+   - Dedos superpuestos o doblados
+   - Anatomía no estándar
+
+3. ARTEFACTOS Y RUIDO
+   - Movimiento durante la captura
+   - Reflexiones en superficies
+   - Ruido en la imagen térmica
+   - Interferencia electromagnética
+
+4. FACTORES DEL MODELO
+   - MedSAM no está entrenado específicamente para imágenes térmicas
+   - El modelo espera radiografías X/CT/ultrasound
+   - Variabilidad en la representación visual del dedo
+   - Límites poco definidos entre dedo y objeto
+
+5. PARÁMETROS DE BOUNDING BOX
+   - Margen inadecuado (actualmente 30px)
+   - Threshold de binarización (actualmente 100)
+   - Box muy pequeño o muy grande
+   - Estructura no bien definida
+
+✅ ACCIONES RECOMENDADAS
+----------------------------------------------------------------------
+
+1. VALIDACIÓN VISUAL
+   - Revisar manualmente los overlays de imágenes con score bajo
+   - Verificar si la segmentación es visualmente correcta
+   - Documentar discrepancias score vs calidad visual
+
+2. AJUSTES DE PARÁMETROS
+   - Experimentar con margen: [10, 20, 40, 50]
+   - Probar diferentes thresholds: [80, 90, 110, 120]
+   - Evaluar multimask_output con diferentes maskIoU thresholds
+
+3. PREPROCESAMIENTO
+   - Normalizar histogramas
+   - Mejorar contraste con CLAHE
+   - Eliminar ruido con filtros morfológicos
+   - Ecualización adaptativa
+
+4. MODELO ALTERNATIVO
+   - Considerar SAM 2 (versión más nueva)
+   - Entrenar modelo específico para térmicas
+   - Usar U-Net o Mask R-CNN entrenado en dominio
+
+5. POST-PROCESAMIENTO
+   - Aplicar morfología (closing, opening)
+   - Filtrar pequeños componentes de ruido
+   - Suavizar bordes de máscaras
+   - Llenar agujeros interiores
+
+📊 ESTADÍSTICAS POR CATEGORÍA
+----------------------------------------------------------------------
+
+test\no/
+  Imágenes: 9
+  Media: 0.6350
+  Mín: 0.6219
+  Máx: 0.6623
+  Desv. Est: 0.0115
+
+test\si/
+  Imágenes: 8
+  Media: 0.6381
+  Mín: 0.6253
+  Máx: 0.6479
+  Desv. Est: 0.0075
+
+train\no/
+  Imágenes: 25
+  Media: 0.6349
+  Mín: 0.6086
+  Máx: 0.6515
+  Desv. Est: 0.0120
+
+train\si/
+  Imágenes: 28
+  Media: 0.6360
+  Mín: 0.6064
+  Máx: 0.6540
+  Desv. Est: 0.0116

@@ -1,0 +1,90 @@
+DOCUMENTACIÓN DE CASOS DE FALLO
+============================================================
+
+Threshold: Score < 0.6
+Total de casos: 7
+
+Imagen: img_1776863889130.png
+Score: 0.5135
+
+Posibles causas a investigar:
+  - Iluminación deficiente
+  - Movimiento o artefactos
+  - Anatomía atípica
+  - Bounding box inadecuado
+  - Contraste bajo
+
+------------------------------------------------------------
+
+Imagen: img_1776863909985.png
+Score: 0.5368
+
+Posibles causas a investigar:
+  - Iluminación deficiente
+  - Movimiento o artefactos
+  - Anatomía atípica
+  - Bounding box inadecuado
+  - Contraste bajo
+
+------------------------------------------------------------
+
+Imagen: img_1777026517084.png
+Score: 0.4796
+
+Posibles causas a investigar:
+  - Iluminación deficiente
+  - Movimiento o artefactos
+  - Anatomía atípica
+  - Bounding box inadecuado
+  - Contraste bajo
+
+------------------------------------------------------------
+
+Imagen: img_1777026555963.png
+Score: 0.4494
+
+Posibles causas a investigar:
+  - Iluminación deficiente
+  - Movimiento o artefactos
+  - Anatomía atípica
+  - Bounding box inadecuado
+  - Contraste bajo
+
+------------------------------------------------------------
+
+Imagen: img_1777027170211.png
+Score: 0.4440
+
+Posibles causas a investigar:
+  - Iluminación deficiente
+  - Movimiento o artefactos
+  - Anatomía atípica
+  - Bounding box inadecuado
+  - Contraste bajo
+
+------------------------------------------------------------
+
+Imagen: img_1777027595858.png
+Score: 0.5776
+
+Posibles causas a investigar:
+  - Iluminación deficiente
+  - Movimiento o artefactos
+  - Anatomía atípica
+  - Bounding box inadecuado
+  - Contraste bajo
+
+------------------------------------------------------------
+
+Imagen: img_1777028264615.png
+Score: 0.4522
+
+Posibles causas a investigar:
+  - Iluminación deficiente
+  - Movimiento o artefactos
+  - Anatomía atípica
+  - Bounding box inadecuado
+  - Contraste bajo
+
+------------------------------------------------------------
+

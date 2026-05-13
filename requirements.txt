@@ -32,3 +32,11 @@ scikit-learn>=1.3.0
 tqdm>=4.65.0
 requests>=2.31.0
 pyyaml>=6.0
+ipykernel
+
+# ✅ EXTRAS RECOMENDADOS
+jupyter>=1.0.0           # Para Jupyter notebooks
+jupyterlab>=4.0.0        # Interfaz mejorada de Jupyter
+ipython>=8.0.0           # Shell interactivo mejorado
+notebook>=7.0.0          # Soporte adicional
+python-dotenv>=1.0.0     # Manejo de variables de entorno

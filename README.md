@@ -132,16 +132,6 @@ pip install -r requirements.txt
 | `openai` | Cliente compatible para acceder a Gemini via OpenRouter |
 | `python-dotenv` | Gestión segura de la API key |
 
-### Configuración de la API (Grupo 3)
-
-Crea un fichero `.env` en el directorio de los notebooks del Día 3:
-
-```
-OPENROUTER_API_KEY=sk-or-v1-xxxxxxxxxxxx
-```
-
-> Obtén tu clave en [https://openrouter.ai/](https://openrouter.ai/) · **Nunca subas tu API key a GitHub.**
-
 ---
 
 ## Aviso Metodológico

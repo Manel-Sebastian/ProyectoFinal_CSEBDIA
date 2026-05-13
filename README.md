@@ -1,69 +1,157 @@
 # ProyectoFinal_CSEBDIA
-Proyecto final de curso sobre la implementación de red neuronal para filtrar si en una foto aparecen dedos o no
 
-# Librerías del Proyecto
-
-Estas son todas las librerias necesarias del proyecto. PAra descargarlas todas a la vez necesitas hacer el comando("pip install -r requirements.txt")
-
-## Librerías Estándar de Python
-
-| Librería | Para qué sirve |
-|----------|---------------|
-| `sys` | Interactuar con el intérprete de Python. Acceder a argumentos de la línea de comandos, salir del programa o modificar el path. |
-| `os` | Interactuar con el sistema operativo. Manejar rutas, crear carpetas, listar archivos y leer variables de entorno. |
-| `random` | Generar números y selecciones aleatorias. Útil para barajar datos, inicializar semillas o hacer muestreos. |
-| `pathlib` | Manejo moderno de rutas de archivos y directorios de forma orientada a objetos. Alternativa más limpia a `os.path`. |
-| `pprint` | *Pretty print*. Imprime estructuras de datos complejas (listas, diccionarios) de forma legible y formateada. |
+Proyecto final de curso sobre clasificación biométrica de posicionamiento de dedo en escáner, desarrollado por los Grupos 2, 3 y 5. El objetivo es determinar automáticamente si un dedo está correctamente colocado sobre la barra de luz del escáner (`SI`) o no (`NO`), comparando tres enfoques distintos: CNNs clásicas con fine-tuning, segmentación médica con MedSAM y clasificación zero-shot con un modelo de lenguaje multimodal.
 
 ---
 
-## Librerías Externas
-### Visualización
+## Estructura del Repositorio
 
-| Librería | Para qué sirve |
-|----------|---------------|
-| `matplotlib` | Crear gráficos, histogramas, curvas de entrenamiento e imágenes. Base de la visualización en Python. |
-| `seaborn` | Visualización estadística construida sobre matplotlib. Gráficos más estéticos y complejos con menos código. |
+```
+ProyectoFinal_CSEBDIA/
+├── CNN_desde_0/
+│   └── imagenes_procesadas/          ← Dataset (70 imágenes PNG 640×480)
+│       ├── train/
+│       │   ├── si/   (25 imágenes)
+│       │   └── no/   (10 imágenes)
+│       └── test/
+│           ├── si/   (20 imágenes)
+│           └── no/   (15 imágenes)
+└── MedSAM_GeminiAPI/
+    ├── Dia1/
+    │   └── medsam_vit_b.pth          ← Modelo MedSAM preentrenado
+    ├── Dia2/
+    │   ├── MedSAM_Dia2_notebook.ipynb
+    │   └── mascaras_segmentadas_todas/
+    └── Dia3/
+        ├── ZeroShot_GeminiAPI.ipynb
+        └── dia3_Gemini_Sergi.ipynb
+```
 
-### Datos y Números
+---
 
-| Librería | Para qué sirve |
-|----------|---------------|
-| `numpy` | Computación numérica con arrays multidimensionales. Base de casi toda la ciencia de datos en Python. |
-| `pandas` | Manipulación y análisis de datos en tablas (DataFrames). Ideal para cargar CSVs, filtrar, agrupar y hacer estadísticas. |
+## El Problema
 
-### Deep Learning (PyTorch)
+Un escáner biométrico no funciona bien si el dedo no está colocado correctamente. Con un dataset de solo 71 imágenes de radiografías térmicas (infrarrojas), el reto era construir un clasificador fiable — lo que resultó ser cualquier cosa menos trivial.
 
-| Librería | Para qué sirve |
-|----------|---------------|
-| `torch` | Framework principal de Deep Learning. Define y entrena redes neuronales con soporte GPU mediante CUDA. |
-| `torch.nn` | Construir redes neuronales. Contiene capas (`Linear`, `Conv2d`...), funciones de activación y de pérdida. |
-| `torch.optim` | Algoritmos de optimización como Adam o SGD para actualizar los pesos de la red durante el entrenamiento. |
-| `torch.optim.lr_scheduler` | Ajusta automáticamente el learning rate cuando la métrica deja de mejorar, evitando estancamientos. |
-| `torch.utils.data` | `Dataset`: define cómo cargar tus datos. `DataLoader`: los sirve en batches con shuffling y paralelismo. |
-| `torchvision.transforms` | Transformaciones para imágenes: redimensionar, normalizar, rotar o aplicar data augmentation. |
+---
 
-### Imágenes
+## Enfoque: Cadena de Tres IAs
 
-| Librería | Para qué sirve |
-|----------|---------------|
-| `Pillow (PIL)` | Abrir, manipular y guardar imágenes en múltiples formatos (JPG, PNG, etc.). Base del procesamiento de imágenes. |
+La arquitectura final emergió de la experimentación a lo largo de tres días de trabajo:
 
-### Machine Learning (Scikit-learn)
+| Paso | Modelo | Rol |
+|------|--------|-----|
+| 1 | **ResNet18 / MobileNetV2** | CNNs preentrenadas en ImageNet con fine-tuning sobre el dominio del escáner |
+| 2 | **MedSAM (ViT-B)** | Segmentación del dedo para aislar la región de interés antes de clasificar |
+| 3 | **Gemini 2.0 Flash Lite** | Clasificación zero-shot multimodal vía OpenRouter, sin entrenamiento específico |
 
-| Librería | Para qué sirve |
-|----------|---------------|
-| `train_test_split` | Divide el dataset en conjuntos de entrenamiento y test de forma aleatoria y estratificada. |
-| `compute_class_weight` | Calcula pesos por clase para compensar datasets desbalanceados durante el entrenamiento. |
-| `accuracy_score` | Porcentaje de predicciones correctas sobre el total. |
-| `classification_report` | Resumen completo de precision, recall y f1-score por cada clase. |
-| `confusion_matrix` | Matriz que muestra aciertos y errores del modelo por clase. |
-| `f1_score` | Media armónica entre precision y recall. Útil cuando las clases están desbalanceadas. |
-| `precision_score` | De todos los que predijo como positivos, cuántos realmente lo eran. |
-| `recall_score` | De todos los que eran positivos, cuántos consiguió detectar el modelo. |
+---
 
-### Utilidades
+## Resultados por Modelo
 
-| Librería | Para qué sirve |
-|----------|---------------|
-| `tqdm` | Muestra barras de progreso en bucles y entrenamientos. Permite ver el avance epoch a epoch. |
+### Grupo 2 — CNNs con Fine-Tuning
+
+| Modelo | Estrategia | Accuracy |
+|--------|-----------|----------|
+| ResNet18 | Zero-shot (sin entrenar) | 53,33% |
+| ResNet18 | Feature Extraction (backbone congelado) | 26,67% |
+| ResNet18 | Fine-Tuning (layer3 + layer4 + fc) | 60,00% |
+| MobileNetV2 | Sin augmentation | 53,33% |
+| MobileNetV2 | Con Albumentations | 53,33% |
+
+> El fine-tuning parcial de ResNet18 fue el único enfoque del Grupo 2 que funcionó. Congelar todo el backbone resultó peor que el azar.
+
+### Grupo 3 — Gemini 2.0 Flash Lite (Zero-Shot)
+
+| Métrica | Valor |
+|---------|-------|
+| Accuracy global | **70,00%** (49/70 aciertos) |
+| Macro F1 | 69,70% |
+| Precision (SI) | 68,29% |
+| Recall (SI) | 77,78% |
+
+> Gemini superó a todos los modelos entrenados sin ver una sola imagen del dominio.
+
+### MedSAM — Segmentación (Día 2)
+
+| Métrica | Valor |
+|---------|-------|
+| Imágenes procesadas | 70/70 (100%) |
+| Score promedio de confianza | 0.6357 |
+| Score mínimo | 0.6064 |
+| Desviación estándar | 0.0114 |
+
+> Segmentación completada con éxito. Todos los scores por encima del umbral de 0.60, con distribución muy estable.
+
+---
+
+## Comparativa Final
+
+| Modelo | Accuracy | F1 (SI) | Recall (SI) | Precision (SI) |
+|--------|----------|---------|-------------|----------------|
+| Gemini Zero-Shot | **70,00%** | **72,73%** | 77,78% | 68,29% |
+| ResNet18 Fine-Tuning | 60,00% | 72,73% | **100,00%** | 57,14% |
+| ResNet18 Zero-Shot | 53,33% | 53,33% | — | — |
+| MobileNetV2 (+Aug) | 53,33% | — | 87,50% | 53,85% |
+
+El F1 de la clase `SI` es idéntico entre Gemini y ResNet18 FT, pero conseguido de formas opuestas: ResNet18 maximiza recall prediciendo casi todo como `SI`, mientras que Gemini mantiene un comportamiento más equilibrado.
+
+---
+
+## Sesgo Común a Todos los Modelos
+
+Todos los modelos tienden a sobre-predecir la clase `SI`. La causa probable es doble: la clase `SI` está ligeramente sobrerrepresentada en el dataset (37 vs 34 imágenes) y los criterios visuales para `NO` son más heterogéneos (hay varios tipos de posicionamiento incorrecto).
+
+---
+
+## Lecciones Aprendidas
+
+1. **Feature extraction sin fine-tuning puede ser peor que el azar.** Congelar todo el backbone de ResNet18 dio un 26,67%.
+2. **Data augmentation no es gratis.** Aumentar el recall de una clase a costa de balanced accuracy no siempre es una mejora.
+3. **Los VLMs zero-shot son competitivos sin entrenamiento específico.** Gemini superó a todos los modelos entrenados con 71 imágenes.
+4. **El tamaño del dataset es el cuello de botella real.** 71 imágenes son insuficientes para entrenar CNNs con confianza estadística.
+5. **El error dominante en todos los modelos es el mismo.** Resolver el desbalance de clase `NO` mejoraría todos los modelos simultáneamente.
+
+---
+
+## Instalación
+
+```bash
+pip install -r requirements.txt
+```
+
+### Dependencias principales
+
+| Librería | Uso |
+|----------|-----|
+| `torch`, `torchvision` | Entrenamiento de CNNs (ResNet18, MobileNetV2) |
+| `scikit-learn` | Métricas: accuracy, F1, matriz de confusión |
+| `Pillow` | Procesamiento de imágenes |
+| `matplotlib`, `seaborn` | Visualización de resultados |
+| `tqdm` | Barras de progreso durante el entrenamiento |
+| `openai` | Cliente compatible para acceder a Gemini via OpenRouter |
+| `python-dotenv` | Gestión segura de la API key |
+
+### Configuración de la API (Grupo 3)
+
+Crea un fichero `.env` en el directorio de los notebooks del Día 3:
+
+```
+OPENROUTER_API_KEY=sk-or-v1-xxxxxxxxxxxx
+```
+
+> Obtén tu clave en [https://openrouter.ai/](https://openrouter.ai/) · **Nunca subas tu API key a GitHub.**
+
+---
+
+## Aviso Metodológico
+
+Los conjuntos de test del Grupo 2 (15 imágenes) y del Grupo 3 (70 imágenes) no son directamente comparables. Un solo acierto o fallo en el Grupo 2 mueve la accuracy un 6,7%, frente al 1,4% en el Grupo 3. La comparativa es indicativa, no concluyente.
+
+---
+
+## Equipo
+
+**Proyecto**: ProyectoFinal_CSEBDIA · Grupos 2, 3 y 5  
+**Integrantes Grupo 5**: Carlos, Manel, Sergi, Fadoua  
+**Fecha**: Mayo 2026

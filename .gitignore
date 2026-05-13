@@ -1,4 +1,5 @@
 venv
 MedSAM_GeminiAPI/Dia1/medsam_vit_b.pth
 __pycache__
-.env
+venv
+*.env

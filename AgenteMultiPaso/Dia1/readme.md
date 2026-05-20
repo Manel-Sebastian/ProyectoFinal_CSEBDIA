@@ -48,7 +48,7 @@ El agente opera de forma **secuencial y condicional**: cada paso sólo se ejecut
 | **Criterio de paso (alta confianza)** | `p_cnn >= 0.70` → veredicto final directo de la CNN                   |
 | **Criterio de paso (baja confianza)** | `p_cnn < 0.70` → se activa el Paso 3 (árbitro Gemini)                |
 
-> **Modelo CNN**: Se usará el mejor modelo disponible entre los del Grupo 2 (ResNet18 con fine-tuning parcial, accuracy 60%) o el Grupo 4. La CNN opera sobre la imagen con la máscara aplicada para focalizar la atención en la región de interés.
+> **Modelo CNN**: Se usa la **ResidualCNN** entrenada desde cero por el Grupo 2 (`CNN_desde_0/CNN_Main_Final.ipynb`), con accuracy del 54,55% en test. La CNN opera sobre la imagen con la máscara aplicada para focalizar la atención en la región de interés.
 
 #### Paso 3 — Arbitraje con Gemini *(condicional)*
 
@@ -142,10 +142,11 @@ Se determinó el valor del umbral a partir del cual la CNN considera que su pred
 
 | Modelo CNN                  | Accuracy         | Comportamiento observado                             |
 | --------------------------- | ---------------- | ---------------------------------------------------- |
-| ResNet18 Zero-Shot          | 53,33%           | Predicciones sin garantía, cerca del azar           |
-| ResNet18 Feature Extraction | 26,67%           | Peor que el azar — backbone completamente congelado |
-| ResNet18 Fine-Tuning        | **60,00%** | Mejor modelo del Grupo 2                             |
-| MobileNetV2 sin aug.        | 53,33%           | Comportamiento similar al azar                       |
+| ResNet18 Zero-Shot              | 53,33%           | Predicciones sin garantía, cerca del azar             |
+| ResNet18 Feature Extraction     | 26,67%           | Peor que el azar — backbone completamente congelado   |
+| ResNet18 Fine-Tuning            | 60,00%           | Mejor ResNet18 del Grupo 2                            |
+| MobileNetV2 sin aug.            | 53,33%           | Comportamiento similar al azar                        |
+| **ResidualCNN** (CNN_desde_0) | **54,55%** | Modelo finalmente usado en el agente (Oscar, Grupo 2) |
 
 > **Referencia de Gemini**: El modelo Gemini zero-shot alcanzó **70,00%** de accuracy sobre 70 imágenes, sin entrenamiento específico. Esto lo posiciona como un árbitro de calidad superior a la CNN en casos difíciles.
 
@@ -157,7 +158,7 @@ UMBRAL_CONFIANZA_CNN = 0.70
 
 #### Justificación
 
-1. **La CNN (ResNet18 FT) tiene un accuracy del 60%**. Cuando su probabilidad de salida (`softmax`) es inferior a 0.70, la incertidumbre es suficientemente alta como para que la decisión sea poco fiable.
+1. **La CNN (ResidualCNN) tiene un accuracy del 54,55%**. Cuando su probabilidad de salida (`softmax`) es inferior a 0.70, la incertidumbre es suficientemente alta como para que la decisión sea poco fiable.
 2. **Gemini tiene un accuracy del 70%** (sin entrenamiento), por lo tanto es un árbitro razonablemente mejor que la CNN en casos límite.
 3. **Análisis del sesgo de la CNN**: Todos los modelos del Grupo 2 tienden a sobre-predecir `SI`. En casos donde la CNN dice `SI` con baja confianza (0.50–0.70), existe alta probabilidad de ser un falso positivo. Gemini, con razonamiento visual, puede corregir este sesgo.
 4. **Equilibrio entre llamadas a la API y calidad**: Un umbral demasiado alto (ej. 0.90) haría que Gemini intervenga en casi todos los casos, aumentando coste y latencia. Un umbral demasiado bajo (ej. 0.50) haría que la CNN nunca delegue, perdiendo los beneficios del árbitro. El valor **0.70** equilibra ambos extremos.
@@ -243,7 +244,7 @@ Antes de implementar el Día 2, el diagrama fue presentado para validación con 
 | -------------------------- | --------------- | ------------------------------------------------------------------------------------ |
 | Flujo completo del agente  | 1.5h            | ✅ Definidos 3 pasos, condiciones de activación y criterios de transición          |
 | Prompt de arbitraje Gemini | 1.5h            | ✅ Prompt diseñado con contexto, 2 imágenes, definición SI/NO y formato de salida |
-| Umbral de confianza CNN    | 1h              | ✅ Umbral = 0.70, justificado con accuracy CNN (60%) y Gemini (70%)                  |
+| Umbral de confianza CNN    | 1h              | ✅ Umbral = 0.70, justificado con accuracy ResidualCNN (54,55%) y Gemini (70%)       |
 | Diagrama de flujo          | 1h              | ✅ Diagrama Mermaid completo, validado antes de implementar                          |
 
 **Total**: 5h

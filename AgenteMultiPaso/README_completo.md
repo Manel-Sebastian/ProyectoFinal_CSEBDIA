@@ -7,7 +7,7 @@
 
 ## ¿Qué hace este proyecto?
 
-Un escáner biométrico de huella dactilar solo funciona bien si el dedo está correctamente colocado encima de la barra de luz. Con solo **71 imágenes** de radiografías térmicas, el reto era construir un clasificador fiable que distinga entre posicionamiento correcto (`SI`) e incorrecto (`NO`).
+Una radiografía solo funciona bien si el dedo está correctamente colocado encima de la barra de luz. Con solo **71 imágenes**, el reto era construir un clasificador fiable que distinga entre posicionamiento correcto (`SI`) e incorrecto (`NO`).
 
 La solución no es un único modelo. Es una **cadena de tres IAs** donde cada modelo hace lo que mejor sabe hacer, y solo entra en acción cuando el anterior no es suficiente.
 
@@ -160,9 +160,9 @@ La siguiente imagen muestra el flujo visual de una imagen atravesando los tres p
 
 ### Integración con Oscar: bbox preciso para MedSAM
 
-MedSAM necesita un bounding box como entrada para saber dónde buscar el objeto de interés. Un bbox genérico del 80% central de la imagen funciona, pero incluye partes del escáner y la mesa que no son el dedo.
+MedSAM necesita un bounding box como entrada para saber dónde buscar el objeto de interés. Un bbox genérico del 80% central de la imagen funciona, pero incluye partes del fondo negro y la mesa que no son el dedo.
 
-El pipeline de Oscar (`day1_opencv_helpers.py`) detecta geométricamente la zona luminosa del escáner. La integración usa la intersección de la mano con esa zona para dar a MedSAM un bbox mucho más preciso:
+El pipeline de Oscar (`day1_opencv_helpers.py`) detecta geométricamente la zona luminosa. La integración usa la intersección de la mano con esa zona para dar a MedSAM un bbox mucho más preciso:
 
 ```
 normalize → detect_black_panel → warp_panel → segment_hand

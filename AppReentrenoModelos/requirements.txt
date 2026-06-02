@@ -1,0 +1,43 @@
+# ============================================================
+# REQUIREMENTS — Radiología AI
+# ============================================================
+# Este proyecto está pensado para ejecutarse en Ubuntu/Linux.
+# En Windows puedes usarlo para desarrollo, pero el despliegue
+# y entrenamiento de modelos debe hacerse en Ubuntu.
+# ============================================================
+
+# ===== Interfaz Web =====
+streamlit>=1.30.0
+
+# ===== API de Gemini (Google) =====
+google-generativeai>=0.7.0
+
+# ===== Entorno y utilidades =====
+python-dotenv>=1.0.0
+Pillow>=10.0.0
+numpy>=1.24.0
+pandas>=2.0.0
+
+# ===== Deep Learning (PyTorch) =====
+# ── Ubuntu / Linux ──
+# CPU solamente:
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+#
+# Con GPU NVIDIA (CUDA 12.1):
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+#
+# Con GPU NVIDIA (CUDA 12.4):
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
+#
+# ── Windows ──
+# CPU:
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+# CUDA 12.1:
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+#
+torch>=2.0.0
+torchvision>=0.15.0
+
+# ===== Augmentación y métricas =====
+albumentations>=1.4.0
+scikit-learn>=1.3.0

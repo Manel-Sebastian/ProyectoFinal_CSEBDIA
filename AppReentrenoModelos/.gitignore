@@ -1,0 +1,34 @@
+# Variables de entorno (contienen claves secretas)
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Entornos virtuales
+venv/
+.venv/
+env/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Modelos entrenados (muy pesados)
+modelos/**/*.pt
+modelos/**/*.pth
+*.pt
+*.pth
+
+# Dataset de imágenes (no subir a Git)
+dataset/
+
+# Métricas y logs
+metrics_history.json
+*.log
+
+# IDEs
+.vscode/
+.idea/
+*.swp
